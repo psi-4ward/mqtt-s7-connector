@@ -1,7 +1,23 @@
 #!/usr/bin/env node
 'use strict';
 
-let config = require('./config');
+// use commander to parse commandline options
+let commander;
+commander = require('commander');
+
+// add --config option to specify config file path
+commander
+	.option('-c, --config <value>', 'Overwrite the default config file location. e.g. /etc/mqtt-s7-connector/config.json')
+	.parse(process.argv);
+
+let config;
+
+// if --config argument is not specified use the config file as originally build
+if (commander.opts().config !== undefined) {
+	config = require(commander.opts().config);
+} else {
+	config = require('./config');
+}
 
 let mqtt_handler = require('./mqtt_handler.js');
 let plc_handler = require('./plc.js');
@@ -35,7 +51,7 @@ function init() {
 			let topic_parts = topic.split('/');
 
 			// call correct device and ask for address from attribute
-			if (topic_parts[3] == "set") {
+			if (topic_parts[3] === "set") {
 				return devices[topic_parts[1]].get_plc_set_address(topic_parts[2]);
 			} else {
 				return devices[topic_parts[1]].get_plc_address(topic_parts[2]);
@@ -43,7 +59,7 @@ function init() {
 		});
 
 		// parse config and create devices
-		if (config.devices != undefined) {
+		if (config.devices !== undefined) {
 
 			// create for each config entry an object
 			// and save it to the array
@@ -90,7 +106,7 @@ function mqttMsgParser(topic, msg) {
 	let topic_parts = topic.split('/');
 
 	// check if the topic is in the mqtt_base
-	if (topic_parts[0] == config.mqtt_base) {
+	if (topic_parts[0] === config.mqtt_base) {
 		let device = topic_parts[1];
 		let attribute = topic_parts[2];
 
@@ -112,7 +128,7 @@ function plc_update_loop() {
 		}
 
 		// publish all data
-		for (var topic in readings) {
+		for (let topic in readings) {
 			let topic_parts = topic.split('/');
 			let device = topic_parts[1];
 			let attribute = topic_parts[2];

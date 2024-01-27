@@ -25,8 +25,11 @@ __An example of a correct configuration file is found in [```config.example.json
 
 The config file has to be valid JSON (You can check [here](https://jsonformatter.curiousconcept.com/) if it´s correct)  
 and is separated in 3 sections:
+- `"plc":`
+- `"mqtt":`
+- `"devices":"`
 
-* plc:  
+### plc:  
 > __general setup of the connection to the plc__  
 >
 > In the most use cases you only have to change the host value to the correct ip
@@ -41,7 +44,7 @@ and is separated in 3 sections:
 }
 ```
 
-* mqtt:  
+### mqtt:  
 > __general setup of the connection to the mqtt broker__
 >
 >The URL/host value can be one of the following protocols: 'mqtt', 'mqtts', 'tcp', 'tls', 'ws', 'wss'.
@@ -59,7 +62,7 @@ and is separated in 3 sections:
 }
 ```
 
-* devices:
+### devices:
 > __list of all registered devices__
 >
 > the list of devices is implemented as an array in json.  

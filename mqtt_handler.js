@@ -1,14 +1,14 @@
-var mqtt = require('mqtt');
+let mqtt = require('mqtt');
 
-var connected = false;
-var isConnected = function () {
+let connected = false;
+let isConnected = function () {
 	return connected;
-}
+};
 
-var setup = function (config, onMessage, finished) {
+let setup = function (config, onMessage, finished) {
 
 	// connect to mqtt
-	var client = mqtt.connect(config.host, {
+	let client = mqtt.connect(config.host, {
 		username: config.user,
 		password: config.password,
 		rejectUnauthorized: config.rejectUnauthorized
@@ -21,13 +21,13 @@ var setup = function (config, onMessage, finished) {
 		finished();
 	});
 
-	// handle incomming messages
+	// handle incoming messages
 	client.on('message', function (topic, msg) {
 		onMessage(topic, msg.toString());
 	});
 
 	return client;
-}
+};
 
 module.exports = {
 	setup: setup,
