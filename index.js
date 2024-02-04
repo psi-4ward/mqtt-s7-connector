@@ -1,30 +1,14 @@
 #!/usr/bin/env node
 'use strict';
 
-// use commander to parse commandline options
-let commander;
-commander = require('commander');
+// imports
+let mqtt_handler = require('./mqtt_handler');
+let plc_handler = require('./plc');
+let config_handler = require('./config_handler')
+let service_functions = require('./service_functions');
+let device_factory = require('./device_factory');
 
-// add --config option to specify config file path
-commander
-	.option('-c, --config <value>', 'Overwrite the default config file location. e.g. /etc/mqtt-s7-connector/config.json')
-	.parse(process.argv);
-
-let config;
-
-// if --config argument is not specified use the config file as originally build
-if (commander.opts().config !== undefined) {
-	config = require(commander.opts().config);
-} else {
-	config = require('./config');
-}
-
-let mqtt_handler = require('./mqtt_handler.js');
-let plc_handler = require('./plc.js');
-
-let sf = require('./service_functions.js');
-let deviceFactory = require('./deviceFactory.js');
-
+let config = config_handler.config();
 let mqtt = mqtt_handler.setup(config.mqtt, mqttMsgParser, init);
 let plc = plc_handler.setup(config.plc, init);
 
@@ -32,13 +16,13 @@ let devices = [];
 
 function init() {
 	if (mqtt_handler.isConnected() && plc_handler.isConnected()) {
-		sf.debug("Initialize !");
+		service_functions.debug("Initialize !");
 
 		// set default config values if they arent set
 		config.debug_level = config.debug_level || 2;
 
-		config.update_time = config.update_time || 1000;
-		config.temperature_interval = config.temperature_interval || 900000;
+		config.update_time = config.update_time || 1000; // 1 second
+		config.temperature_interval = config.temperature_interval || 300000; // 300seconds or 5 minutes
 
 		config.mqtt_base = config.mqtt_base || "s7";
 		config.retain_messages = config.retain_messages || false;
@@ -64,7 +48,7 @@ function init() {
 			// create for each config entry an object
 			// and save it to the array
 			config.devices.forEach((dev) => {
-				let new_device = deviceFactory(devices, plc, mqtt, dev, config.mqtt_base);
+				let new_device = device_factory(devices, plc, mqtt, dev, config.mqtt_base);
 
 				// perform discovery message
 				new_device.discovery_topic = config.discovery_prefix;
@@ -74,10 +58,10 @@ function init() {
 				// with the mqtt base as the index
 				devices[new_device.mqtt_name] = new_device;
 
-				sf.debug("New device added: " + config.mqtt_base + "/" + new_device.mqtt_name);
+				service_functions.debug("New device added: " + config.mqtt_base + "/" + new_device.mqtt_name);
 			});
 		} else {
-			sf.error("No devices in config found !");
+			service_functions.error("No devices in config found !");
 		}
 
 
@@ -96,7 +80,7 @@ function init() {
 	} else {
 		setTimeout(() => {
 			if (!mqtt_handler.isConnected() || !plc_handler.isConnected()) {
-				sf.error("Connection Timeout");
+				service_functions.error("Connection Timeout");
 			}
 		}, 5000)
 	}
@@ -123,7 +107,7 @@ function mqttMsgParser(topic, msg) {
 function plc_update_loop() {
 	plc.readAllItems((err, readings) => {
 		if (err) {
-			sf.debug("Error while reading from PLC !");
+			service_functions.debug("Error while reading from PLC !");
 			return;
 		}
 
