@@ -68,7 +68,7 @@
       "name": "Garage",
       "type": "binarycover",
 
-      "currentPosition": "DB56,X0.3",
+      "currentPosition": "DB56,X0.3"
     },
     {
       "name": "Binary Sensor",
