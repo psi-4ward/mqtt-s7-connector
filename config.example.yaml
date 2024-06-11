@@ -4,6 +4,7 @@ update_time: 10000
 temperature_interval: 900000
 
 mqtt_base: s7
+mqtt_base_name: plc_number1
 retain_messages: true
 
 discovery_prefix: homeassistant

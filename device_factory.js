@@ -16,16 +16,16 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 	let name = config.name || "unnamed device";
 	let mqtt_name = "";
 
-	// if the attribute 'mqtt' isnt set
+	// if the attribute 'mqtt' isn't set
 	// we have to generate one
 	if (config.mqtt) {
 		mqtt_name = config.mqtt;
 	} else {
-		mqtt_name = name.toLowerCase().split(' ').join('-').split('/').join('-');
+		mqtt_name = name.toLowerCase().split(' ').join('_').split('/').join('_').split('-').join('_');
 	}
 
 	// check if the spot in the array is already occupied
-	// if it is then add an postfix to it
+	// if it is then add a postfix to it
 	// loop so long until we found an empty spot
 	let index = 1;
 	let new_mqtt_name = mqtt_name;
@@ -34,7 +34,7 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 		index++;
 	}
 
-	// save new values back to config
+	// save new values back to config,
 	// so it can be processed in the new object
 	mqtt_name = new_mqtt_name;
 	config.name = name;
@@ -44,27 +44,21 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 	switch (type) {
 		case "light":
 			return new dev_light(plc, mqtt, config);
-			break;
 
 		case "sensor":
 			return new dev_sensor(plc, mqtt, config);
-			break;
 
 		case "switch":
 			return new dev_switch(plc, mqtt, config);
-			break;
 
 		case "cover":
 			return new dev_cover(plc, mqtt, config);
-			break;
 
 		case "climate":
 			return new dev_climate(plc, mqtt, config);
-			break;
 
 		case "binarycover":
 			return new dev_binCover(plc, mqtt, config);
-			break;
 
 		default:
 			sf.debug("Unknown device type '" + type + "'");
