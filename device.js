@@ -31,7 +31,7 @@ module.exports = class device {
 			this.full_mqtt_topic);
 
 		// the config could be an object
-		// or simply an string
+		// or simply a string
 		if (typeof config == "object") {
 			new_attribute.plc_address = config.plc;
 
@@ -65,18 +65,18 @@ module.exports = class device {
 		// register the attribute to the plc library
 		new_attribute.subscribePlcUpdates();
 
-		// split the plc adress to get the type
+		// split the plc address to get the type
 		let offset = new_attribute.plc_address.split(',');
 		let params = offset[1].match(/(\d+|\D+)/g);
 		let type = params[0];
 
 		// check if the type is correct
-		// and if it isnt then print some infos
-		if (required_type != "" && type != required_type) {
+		// and if it isn't then print some infos
+		if (required_type !== "" && type !== required_type) {
 			sf.debug("Wrong datatype '" + type + "' at attribute '" + name + "'");
 
 			let numbers = "";
-			for (var i = 1; i < params.length; i++) {
+			for (let i = 1; i < params.length; i++) {
 				numbers += params[i];
 			}
 
@@ -96,11 +96,11 @@ module.exports = class device {
 	}
 
 	send_discover_msg(info) {
-		// create an topic in which the discovery message can be sent
+		// create a topic in which the discovery message can be sent
 		let topic = this.discovery_topic + "/" +
 			this.type + "/s7/" + this.mqtt_name + "/config";
 
-		info.uniq_id = 's7-' + this.mqtt_name;
+		info.unique_id = 's7-' + this.mqtt_name;
 
 		this.mqtt_handler.publish(topic, JSON.stringify(info), {
 			retain: this.discovery_retain

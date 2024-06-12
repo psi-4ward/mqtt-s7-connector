@@ -69,7 +69,7 @@ devices:
 ```
 
 ## Address formatting
-This tool uses the NodeS7 Library and it uses the same address formatting.  
+This tool uses the NodeS7 Library, and it uses the same address formatting.  
 An example of correct formatted addresses is found at the [NodeS7 Repository](https://github.com/plcpeople/nodeS7#examples)
 
 __Address examples:__  
@@ -186,7 +186,7 @@ state:
 ```
 
 ### `unit_of_measurement` option
-This is only for Home Assistant. It will add an additional unit of measurement to the data.
+This is only for Home Assistant. It will add an extra unit of measurement to the data.
 ```yaml
 state:
     plc: DB56,REAL10,
