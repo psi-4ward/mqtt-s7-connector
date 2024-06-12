@@ -1,7 +1,5 @@
 let sf = require('./service_functions.js');
 
-let device = require('./device.js');
-
 let dev_light = require('./devices/light.js');
 let dev_cover = require('./devices/cover.js');
 let dev_sensor = require('./devices/sensor.js');
@@ -14,7 +12,7 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 
 	// check name
 	let name = config.name || "unnamed device";
-	let mqtt_name = "";
+	let mqtt_name;
 
 	// if the attribute 'mqtt' isn't set
 	// we have to generate one
@@ -24,19 +22,35 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 		mqtt_name = name.toLowerCase().split(' ').join('_').split('/').join('_').split('-').join('_');
 	}
 
-	// check if the spot in the array is already occupied
-	// if it is then add a postfix to it
-	// loop so long until we found an empty spot
-	let index = 1;
+	// This below only generates a lot of entities every time the addon restarts....
+	// it creates things like in the mqtt server:
+	// "s7/test-light-dimable-1-1-1-1-1-1"
+	// "s7/test-light-dimable-1-1-1-1-1-1-1"
+	// "s7/test-light-dimable-1-1-1-1-1-1-1-1"
+	// and like this in home assistant:
+	// "light.test_light_dimable_1"
+	// "light.test_light_dimable_2"
+	// "light.test_light_dimable_10"
+	// I decided to make a log.warning if a double name pops up
+	//
+	// TODO: remove this if test is successful
+	// // check if the spot in the array is already occupied
+	// // if it is then add a postfix to it
+	// // loop so long until we found an empty spot
+	// // let index = 1;
+	// // let new_mqtt_name = mqtt_name;
+	// // while (devices[new_mqtt_name] !== undefined) {
+	// //	new_mqtt_name = mqtt_name + "_" + index;
+	// //	index++;
+	// // }
+
 	let new_mqtt_name = mqtt_name;
-	while (devices[new_mqtt_name] !== undefined) {
-		new_mqtt_name = mqtt_name + "-" + index;
-		index++;
+	if (devices[new_mqtt_name] !== undefined) {
+		sf.warning("Name: " + devices[new_mqtt_name] + " is used double! This can cause strange behaviour. Fix this in your config file!");
 	}
 
 	// save new values back to config,
 	// so it can be processed in the new object
-	mqtt_name = new_mqtt_name;
 	config.name = name;
 	config.mqtt = new_mqtt_name;
 	config.mqtt_base = mqtt_base;
