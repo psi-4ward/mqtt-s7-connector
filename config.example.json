@@ -1,6 +1,4 @@
 {
-  "debug_level": 2,
-
   "update_time": 10000,
   "temperature_interval": 900000,
 
