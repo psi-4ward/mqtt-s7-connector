@@ -5,7 +5,7 @@
 let mqtt_handler = require('./mqtt_handler');
 let plc_handler = require('./plc');
 let config_handler = require('./config_handler')
-let service_functions = require('./service_functions');
+let sf = require('./service_functions');
 let device_factory = require('./device_factory');
 
 let config = config_handler.config();
@@ -16,11 +16,9 @@ let devices = [];
 
 function init() {
 	if (mqtt_handler.isConnected() && plc_handler.isConnected()) {
-		service_functions.debug("Initialize !");
+		sf.debug("Initialize application");
 
 		// set default config values if they arent set
-		config.debug_level = config.debug_level || 2;
-
 		config.update_time = config.update_time || 1000; // 1 second
 		config.temperature_interval = config.temperature_interval || 300000; // 300seconds or 5 minutes
 
@@ -58,10 +56,10 @@ function init() {
 				// with the mqtt base as the index
 				devices[new_device.mqtt_name] = new_device;
 
-				service_functions.debug("New device added: " + config.mqtt_base + "/" + new_device.mqtt_name);
+				sf.debug("New device added: " + config.mqtt_base + "/" + new_device.mqtt_name);
 			});
 		} else {
-			service_functions.error("No devices in config found !");
+			sf.error("No devices in config found !");
 		}
 
 
@@ -80,7 +78,7 @@ function init() {
 	} else {
 		setTimeout(() => {
 			if (!mqtt_handler.isConnected() || !plc_handler.isConnected()) {
-				service_functions.error("Connection Timeout");
+				sf.error("Connection Timeout");
 			}
 		}, 5000)
 	}
@@ -107,7 +105,7 @@ function mqttMsgParser(topic, msg) {
 function plc_update_loop() {
 	plc.readAllItems((err, readings) => {
 		if (err) {
-			service_functions.debug("Error while reading from PLC !");
+			sf.debug("Error while reading from PLC !");
 			return;
 		}
 
