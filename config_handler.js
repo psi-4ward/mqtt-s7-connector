@@ -1,12 +1,8 @@
-let commander;
-let fs;
-let yaml;
-let sf;
+let sf = require('./service_functions.js');
 
-commander = require('commander');
-fs = require('fs');
-yaml = require('yaml');
-sf = require('service_functions')
+let commander = require('commander');
+let fs = require('fs');
+let yaml = require('yaml');
 
 let config = function() {
     // add --config option to specify a config file path
