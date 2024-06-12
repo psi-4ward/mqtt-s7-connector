@@ -8,7 +8,7 @@
 // 6: Fatal		> Exit program
 
 
-module.exports.debug = function trace(msg) {
+module.exports.trace = function trace(msg) {
 	if (global.log_level < 1) {
 		console.log("## TRACE   ## " + msg);
 	}
@@ -20,13 +20,13 @@ module.exports.debug = function debug(msg) {
 	}
 }
 
-module.exports.debug = function info(msg) {
+module.exports.info = function info(msg) {
 	if (global.log_level <= 2) {
 		console.log("## INFO    ## " + msg);
 	}
 }
 
-module.exports.debug = function notice(msg) {
+module.exports.notice = function notice(msg) {
 	if (global.log_level <= 3) {
 		console.log("## NOTICE  ## " + msg);
 	}
@@ -46,7 +46,7 @@ module.exports.error = function error(msg) {
 	process.exit(-1);
 }
 
-module.exports.error = function fatal(msg) {
+module.exports.fatal = function fatal(msg) {
 	console.log("## FATAL  ## " + msg)
 	throw new Error(msg);
 }
