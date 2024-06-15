@@ -32,7 +32,7 @@ function init() {
 		plc.setTranslationCB((topic) => {
 			let topic_parts = topic.split('/');
 
-			// call correct device and ask for address from attribute
+			// call a correct device and ask for address from attribute
 			if (topic_parts[3] === "set") {
 				return devices[topic_parts[1]].get_plc_set_address(topic_parts[2]);
 			} else {
@@ -48,7 +48,7 @@ function init() {
 			config.devices.forEach((dev) => {
 				let new_device = device_factory(devices, plc, mqtt, dev, config.mqtt_base_name + "_" + config.mqtt_base);
 
-				// perform discovery message
+				// perform a discovery message
 				new_device.discovery_topic = config.discovery_prefix;
 				new_device.send_discover_msg();
 
@@ -95,7 +95,7 @@ function mqttMsgParser(topic, msg) {
 		// if device exists
 		if (devices[device]) {
 
-			// give all data to device
+			// give all data to a device
 			devices[device].rec_mqtt_data(attribute, msg);
 		}
 	}
