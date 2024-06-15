@@ -12,6 +12,14 @@ let config = function() {
         .option('-l, --loglevel <value>', 'Sets the log level, Default=4 >>> 0: Trace, 1: Debug, 2: Info, 3: Notice, 4: Warning, 5: Error, 6: Fatal')
         .parse(process.argv);
 
+    if (commander.opts().loglevel !== undefined) {
+        global.log_level = commander.opts().loglevel;
+    } else {
+        global.log_level = 4;
+    }
+
+    console.log('## INIT   ## log level is set to: ' + global.log_level);
+
 // if --config argument is not specified use the config file as originally build
     if (commander.opts().config !== undefined) {
         let extension = commander.opts().config.slice(-4);
@@ -36,13 +44,6 @@ let config = function() {
             sf.error("No config file found...")
         }
     }
-
-    if (commander.opts().loglevel !== undefined) {
-        global.log_level = commander.opts().loglevel;
-    } else {
-        global.log_level = 4;
-    }
-
 }
 
 module.exports = {
