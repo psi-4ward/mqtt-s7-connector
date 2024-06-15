@@ -168,8 +168,9 @@ module.exports = class attribute {
 
 		// write to plc
 		this.plc_handler.writeItems(this.full_mqtt_topic + "/set", data, (error) => {
-			sf.plc_response(error);
-
+			if (error) {
+				sf.warning("Error while writing to PLC !")
+			}
 			if (cb) cb(error);
 		});
 	}
