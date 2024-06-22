@@ -23,6 +23,7 @@ function init() {
 		config.temperature_interval = config.temperature_interval || 300000; // 300seconds or 5 minutes
 
 		config.mqtt_base = config.mqtt_base || "s7";
+		config.mqtt_device_name = config.mqtt_device_name || "plc";
 		config.retain_messages = config.retain_messages || false;
 
 		config.discovery_prefix = config.discovery_prefix || "homeassistant";
@@ -46,7 +47,7 @@ function init() {
 			// create for each config entry an object
 			// and save it to the array
 			config.devices.forEach((dev) => {
-				let new_device = device_factory(devices, plc, mqtt, dev, config.mqtt_base_name + "_" + config.mqtt_base);
+				let new_device = device_factory(devices, plc, mqtt, dev, config.mqtt_base + "_" + config.mqtt_device_name);
 
 				// perform a discovery message
 				new_device.discovery_topic = config.discovery_prefix;
@@ -56,7 +57,7 @@ function init() {
 				// with the mqtt base as the index
 				devices[new_device.mqtt_name] = new_device;
 
-				sf.debug("New device added: " + config.mqtt_base + "/" + new_device.mqtt_name);
+				sf.debug("New device added: " + config.mqtt_base + "_" + config.mqtt_device_name + "/" + new_device.mqtt_name);
 			});
 		} else {
 			sf.error("No devices in config found !");
@@ -88,7 +89,7 @@ function mqttMsgParser(topic, msg) {
 	let topic_parts = topic.split('/');
 
 	// check if the topic is in the mqtt_base
-	if (topic_parts[0] === config.mqtt_base) {
+	if (topic_parts[0] === config.mqtt_base + "_" + config.mqtt_device_name) {
 		let device = topic_parts[1];
 		let attribute = topic_parts[2];
 
