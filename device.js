@@ -15,7 +15,7 @@ module.exports = class device {
 
 		// device topics
 		this.mqtt_name = config.mqtt;
-		this.full_mqtt_topic = config.mqtt_base + "_" + config.mqtt_device_name + "/" + this.mqtt_name;
+		this.full_mqtt_topic = config.mqtt_base + "/" + this.mqtt_name;
 
 		// store all attribute objects in this array
 		this.attributes = {};
@@ -99,10 +99,10 @@ module.exports = class device {
 		// create a topic in which the discovery message can be sent
 		let topic = this.discovery_topic + "/" +
 			this.type + "/" +
-			this.config.mqtt_base + "_" + this.config.mqtt_device_name + "/" +
+			this.config.mqtt_base + "/" +
 			this.mqtt_name + "/config";
 
-		info.unique_id = this.config.mqtt_base + "_blah_" + this.config.mqtt_device_name + "_" + this.mqtt_name;
+		info.unique_id = this.config.mqtt_base + "_" + this.mqtt_name;
 
 		this.mqtt_handler.publish(topic, JSON.stringify(info), {
 			retain: this.discovery_retain
