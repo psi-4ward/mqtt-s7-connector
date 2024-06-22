@@ -39,7 +39,7 @@ module.exports = class device {
 			if (config.set_plc)
 				new_attribute.plc_set_address = config.set_plc;
 
-			// optional Read Write config
+			// optional Read/Write config
 			if (config.rw)
 				new_attribute.set_RW(config.rw);
 
@@ -47,7 +47,7 @@ module.exports = class device {
 			if (config.update_interval)
 				new_attribute.update_interval = config.update_interval;
 
-			// optional inverted, works only with booleans
+			// optionally inverted, works only with booleans
 			if (config.inverted)
 				new_attribute.boolean_inverted = config.inverted;
 
@@ -102,7 +102,7 @@ module.exports = class device {
 			this.config.mqtt_base + "_" + this.config.mqtt_device_name + "/" +
 			this.mqtt_name + "/config";
 
-		info.unique_id = this.config.mqtt_base + "_" + this.config.mqtt_device_name + "_" + this.mqtt_name;
+		info.unique_id = this.config.mqtt_base + "_blah_" + this.config.mqtt_device_name + "_" + this.mqtt_name;
 
 		this.mqtt_handler.publish(topic, JSON.stringify(info), {
 			retain: this.discovery_retain
