@@ -6,7 +6,7 @@ module.exports = class device {
 		this.plc_handler = plc;
 		this.mqtt_handler = mqtt;
 
-		this.name = config.name || "unnamed device";
+		this.name = config.mqtt_base + "_" + config.name || config.mqtt_base + "_" + "unnamed device";
 		this.config = config;
 
 		this.discovery_topic = "homeassistant";
