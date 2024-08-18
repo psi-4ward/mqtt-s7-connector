@@ -1,10 +1,12 @@
 # Config file in YAML format
 
-Because the mqtt-s7 module was intended to be used in Home Assistant and these days YAML is the standard for configuring 
-everything, I decided to add support for YAML. Besides, YAML is easier to write and read.
+Because the mqtt-s7 module was intended to be used in Home Assistant,
+and these days YAML is the standard for configuring 
+everything, I decided to add support for YAML.
+Besides, YAML is easier to write and read.
 
-If you want to use YAML as your configuration you will need to add `--yaml` to your start command 
-e.g.: `$ npm start -- --yaml`. Please refer the [commandline options](README.md#commandline-options) section for more information
+If you want to use YAML as your configuration, you will need to add `--yaml` to your start command 
+e.g. `$ npm start -- --yaml`. Please refer the [commandline options](README.md#commandline-options) section for more information
 
 This document is changed to match the YAML config format
 
@@ -14,8 +16,8 @@ The configuration file has to be located in the same directory as the installati
 
 __An example of a correct configuration file is found in [```config.example.yaml```](config.example.yaml).__
 
-The **yaml** config file has to be valid YAML (You can check [here](https://www.yamllint.com/) if it´s correct)  
-and it is separated in 3 sections:
+The **yaml** config file has to be valid YAML (You can check [here](https://www.yamllint.com/) if it's correct),  
+and it is separated in three sections:
 
 - [`plc:`](#plc-object)
 - [`mqtt:`](#mqtt-object)
@@ -24,7 +26,7 @@ and it is separated in 3 sections:
 ### `plc` Object
 _General setup of the connection to the plc_
 
-In the most use cases you only have to change the host value to the correct ip
+In most use cases, you only have to change the host value to the correct ip
 ```yaml
 plc:
   port: 102
@@ -53,7 +55,7 @@ mqtt:
 ### `devices` Object
 _list of all registered devices__
 
-the list of devices is implemented as an array in yaml.  
+the list of devices is implemented as an array in YAML.  
 each device has its own entry in this list and will be configured there.
 
 Each device has to have a 'name' entry and a 'type' entry, the remaining attributes are optional
@@ -78,11 +80,11 @@ DB51,REAL216 _(read from DB51 four bytes starting from byte 216)_
 DB56,BYTE40 _(read from DB56 one byte at 40)_
 
 __Supported data types__  
-X = 1 Bit -> converted to true / false  
-BYTE = 1 Byte (8 Bit) -> converted to Int  
-REAL = 4 Bytes (32 Bit) -> converted to Float
+X = 1 Bit → converted to true / false  
+BYTE = 1 Byte (8 Bit) → converted to Int  
+REAL = 4 Bytes (32 Bit) → converted to Float
 
-For more information see the [NodeS7 Repository](https://github.com/plcpeople/nodeS7#examples)
+For more information, see the [NodeS7 Repository](https://github.com/plcpeople/nodeS7#examples)
 
 ## Device types and attributes
 The device type categories are based on the categories from Home Assistant  
@@ -100,7 +102,7 @@ Current list of supported device types with supported attributes:
 
 * sensor
     * `state` _(X/BYTE/REAL)_  
-      state of device  
+      state of a device  
       _is readonly by default_
 
 
@@ -130,7 +132,7 @@ Current list of supported device types with supported attributes:
 
     * `trigger` _(X)_  
       __internal value__: it won't be exposed over mqtt  
-      this bit will be turned on and off automatically after one of the other attributes of the cover will be changed
+      this bit will be turned on and off automatically after one of the other attributes of the cover is changed
 
 
 * binaryCover
@@ -142,8 +144,8 @@ Current list of supported device types with supported attributes:
 
 ## Attribute Options
 
-A "simple" device has just the plc address as the value of the attributes,  
-however it's possible to configure each attribute individually by assigning an object instead of a string to it.
+A "simple" device has just the plc address as the value of the attributes;  
+however, it's possible to configure each attribute individually by assigning an object instead of a string to it.
 
 
 Simple Attribute:
@@ -157,7 +159,7 @@ state:
     plc: DB56,X150.0
 ```
 
-Now after rewriting it's possible to add more options inside the brackets of the attribute.
+Now after rewriting, it's possible to add more options inside the brackets of the attribute.
 
 __Available options:__
 

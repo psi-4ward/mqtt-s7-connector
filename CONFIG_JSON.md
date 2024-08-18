@@ -1,7 +1,7 @@
 # Config file in JSON format
 
 Because mqtt-s7-connector module was originally designed to work with a JSON configuration. I Don't want to break 
-the original functionality I decided to leave the json handling as it was. If you want to use YAML please refer [this](CONFIG_YAML.md)
+the original functionality I decided to leave the JSON handling as it was. If you want to use YAML please refer [this](CONFIG_YAML.md)
 document.
 
 ## Config File
@@ -10,8 +10,8 @@ The configuration file has to be located in the same directory as the installati
 
 __An example of a correct configuration file is found in [```config.example.json```](https://github.com/timroemisch/mqtt-s7-connector/blob/master/config.example.json).__
 
-The **json** config file has to be valid JSON (You can check [here](https://jsonformatter.curiousconcept.com/) if it´s correct)  
-and is separated in 3 sections:
+The **json** config file has to be valid JSON (You can check [here](https://jsonformatter.curiousconcept.com/) if it's correct)  
+and is separated in three sections:
 
 json:
 - [`"plc":`](#plc-object)
@@ -21,7 +21,7 @@ json:
 ### `plc:` Object
 _general setup of the connection to the plc__
 
-In the most use cases you only have to change the host value to the correct ip
+In most use cases, you only have to change the host value to the correct ip
 ```json lines
 "plc": {
     "port": 102,
@@ -52,8 +52,8 @@ If you are using a self-signed certificate, use the ```rejectUnauthorized: false
 ### `devices:` Object
 _list of all registered devices_
 
-the list of devices is implemented as an array in json.  
-each device has it's own entry in this list and will be configured there.
+the list of devices is implemented as an array in JSON.  
+each device has its own entry in this list and will be configured there.
 
 Each device has to have a 'name' entry and a 'type' entry, the remaining attributes are optional
 ```json lines
@@ -75,7 +75,7 @@ Each device has to have a 'name' entry and a 'type' entry, the remaining attribu
 ```
 
 ## Address formatting
-This tool uses the NodeS7 Library and it uses the same address formatting.  
+This tool uses the NodeS7 Library, and it uses the same address formatting.  
 An example of correct formatted addresses is found at the [NodeS7 Repository](https://github.com/plcpeople/nodeS7#examples)
 
 __Address examples:__  
@@ -84,11 +84,11 @@ DB51,REAL216 _(read from DB51 four bytes starting from byte 216)_
 DB56,BYTE40 _(read from DB56 one byte at 40)_
 
 __Supported data types__  
-X = 1 Bit -> converted to true / false  
-BYTE = 1 Byte (8 Bit) -> converted to Int  
-REAL = 4 Bytes (32 Bit) -> converted to Float
+X = 1 Bit → converted to true / false  
+BYTE = 1 Byte (8 Bit) → converted to Int  
+REAL = 4 Bytes (32 Bit) → converted to Float
 
-For more information see the [NodeS7 Repository](https://github.com/plcpeople/nodeS7#examples)
+For more information, see the [NodeS7 Repository](https://github.com/plcpeople/nodeS7#examples)
 
 ## Device types and attributes
 The device type categories are based on the categories from Home Assistant  
@@ -106,7 +106,7 @@ Current list of supported device types with supported attributes:
 
 * sensor
     * ```state``` _(X/BYTE/REAL)_  
-      state of device  
+      state of a device  
       _is readonly by default_
 
 
@@ -136,7 +136,7 @@ Current list of supported device types with supported attributes:
 
     * ```trigger``` _(X)_  
       __internal value__: it won't be exposed over mqtt  
-      this bit will be turned on and off automatically after one of the other attributes of the cover will be changed
+      this bit will be turned on and off automatically after one of the other attributes of the cover is changed
 
 
 * binaryCover
@@ -148,8 +148,8 @@ Current list of supported device types with supported attributes:
 
 ## Attribute Options
 
-A "simple" device has just the plc address as the value of the attributes,  
-however it's possible to configure each attribute individually by assigning an object instead of a string to it.
+A "simple" device has just the plc address as the value of the attributes;
+however, it's possible to configure each attribute individually by assigning an object instead of a string to it.
 
 
 Simple Attribute:
@@ -164,7 +164,7 @@ Rewritten Attribute:
 },
 ```
 
-Now after rewriting it's possible to add more options inside the brackets of the attribute.
+Now after rewriting, it's possible to add more options inside the brackets of the attribute.
 
 __Available options:__
 
@@ -195,7 +195,7 @@ The time is set in ms
 ```
 
 ### `unit_of_measurement` option
-This is only for Home Assistant. It will add a additional unit of measurement to the data.
+This is only for Home Assistant. It will add a unit of measurement to the data.
 ```json lines
 "state": {
     "plc": "DB56,REAL10",
@@ -204,7 +204,7 @@ This is only for Home Assistant. It will add a additional unit of measurement to
 ```
 
 ### `set_plc` option
-By default attributes have only one address, but if you define "set_plc"  
+By default, attributes have only one address, but if you define "set_plc"  
 the attribute will read from "plc" and write to "set_plc"
 ```json lines
 "state": {

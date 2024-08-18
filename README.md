@@ -1,7 +1,7 @@
 # mqtt-s7-connector
 This is a [Node.js](http://nodejs.org/) tool to connect a Siemens S7 PLC over Mqtt with [Home Assistant](https://github.com/home-assistant/home-assistant)
 
-This project is intended to use along with [Home Assistant](https://github.com/home-assistant/home-assistant), but is also possible to use it as a simple bridge 
+This project is intended to use it along with [Home Assistant](https://github.com/home-assistant/home-assistant), but is also possible to use it as a simple bridge 
 between s7 and mqtt.
 
 
@@ -27,7 +27,7 @@ npm start
 
 ## Commandline options
 `--yaml`<br>
-Adding this option will enable mqtt-s7-connector to use yaml config files.
+Adding this option will enable mqtt-s7-connector to use YAML config files.
 
 `--config <path>` <br>
 Specify the path of the config file
@@ -41,8 +41,8 @@ The default mqtt topic is ```homeassistant```, it can be changed in the config f
 ## ToDo
 * climate component additional attributes
 * code cleanup
-* documentation
-* testing
+* documentation + JSDoc comments
+* more testing
 
 Pull requests welcome! 😄
 
