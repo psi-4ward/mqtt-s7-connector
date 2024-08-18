@@ -1,38 +1,37 @@
-let sf = require("../service_functions.js");
 let device = require("../device.js");
 
 module.exports = class devCover extends device {
 	constructor(plc, mqtt, config, mqtt_base) {
 		super(plc, mqtt, config, mqtt_base);
 
-		// add attributes spezific for a cover
+		// add attributes specific for a cover
 		// create attribute from config
 
 		// targetPosition
-		if (config.targetPosition) {
-			this.create_attribute(config.targetPosition, "BYTE", "targetPosition");
+		if (config["targetPosition"]) {
+			this.create_attribute(config["targetPosition"], "BYTE", "targetPosition");
 		}
 
 		// currentPosition
-		if (config.currentPosition) {
-			this.create_attribute(config.currentPosition, "BYTE", "currentPosition");
+		if (config["currentPosition"]) {
+			this.create_attribute(config["currentPosition"], "BYTE", "currentPosition");
 			this.attributes["currentPosition"].set_RW("r"); // read from s7 and publish to mqtt
 		}
 
 		// tiltAngle
-		if (config.tiltAngle) {
-			this.create_attribute(config.tiltAngle, "BYTE", "tiltAngle");
+		if (config["tiltAngle"]) {
+			this.create_attribute(config["tiltAngle"], "BYTE", "tiltAngle");
 		}
 
 		// currentTiltAngle
-		if (config.currentTiltAngle) {
-			this.create_attribute(config.currentTiltAngle, "BYTE", "currentTiltAngle");
+		if (config["currentTiltAngle"]) {
+			this.create_attribute(config["currentTiltAngle"], "BYTE", "currentTiltAngle");
 			this.attributes["currentTiltAngle"].set_RW("r"); // read from s7 and publish to mqtt
 		}
 
 		// this bit will be set after triggering each action
-		if (config.trigger) {
-			this.create_attribute(config.trigger, "X", "trigger");
+		if (config["trigger"]) {
+			this.create_attribute(config["trigger"], "X", "trigger");
 			this.attributes["trigger"].set_RW("i"); // internal attribute
 		}
 	}
@@ -73,7 +72,7 @@ module.exports = class devCover extends device {
 	rec_mqtt_data(attr, data) {
 
 		// call parent class method
-		super.rec_mqtt_data(attr, data, (error) => {
+		super.rec_mqtt_data(attr, data, () => {
 			// callback function of attribute when write was finished
 
 			// if the trigger attr is defined

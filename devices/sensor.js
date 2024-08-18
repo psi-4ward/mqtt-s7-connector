@@ -1,11 +1,11 @@
-let sf = require("../service_functions.js");
+require("../service_functions.js");
 let device = require("../device.js");
 
 module.exports = class devSensor extends device {
 	constructor(plc, mqtt, config, mqtt_base) {
 		super(plc, mqtt, config, mqtt_base);
 
-		// add attributes spezific for a sensor
+		// add attributes specific for a sensor
 		// create attribute from config
 
 		// state
@@ -15,9 +15,9 @@ module.exports = class devSensor extends device {
 			this.attributes["state"].set_RW("r"); // readonly
 		}
 
-		// if a boolean adress is given
+		// if a boolean address is given,
 		// change the type from "sensor" to "binary_sensor"
-		if (this.attributes["state"].type == "X") {
+		if (this.attributes["state"].type === "X") {
 			this.type = "binary_sensor";
 		}
 	}
@@ -36,7 +36,7 @@ module.exports = class devSensor extends device {
 			}
 
 			// if this sensor is binary
-			if (this.type == "binary_sensor") {
+			if (this.type === "binary_sensor") {
 				info.payload_on = "true";
 				info.payload_off = "false";
 			}

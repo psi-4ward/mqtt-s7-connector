@@ -1,21 +1,20 @@
-let sf = require("../service_functions.js");
 let device = require("../device.js");
 
 module.exports = class devLight extends device {
 	constructor(plc, mqtt, config, mqtt_base) {
 		super(plc, mqtt, config, mqtt_base);
 
-		// add attributes spezific for a light
+		// add attributes specific for a light
 		// create attribute from config
 
 		// binary state
-		if (config.state) {
-			this.create_attribute(config.state, "X", "state");
+		if (config["state"]) {
+			this.create_attribute(config["state"], "X", "state");
 		}
 
 		// one byte for brightness
-		if (config.brightness) {
-			this.create_attribute(config.brightness, "BYTE", "brightness");
+		if (config["brightness"]) {
+			this.create_attribute(config["brightness"], "BYTE", "brightness");
 		}
 	}
 

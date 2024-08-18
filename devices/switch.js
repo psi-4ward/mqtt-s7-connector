@@ -1,11 +1,11 @@
-let sf = require("../service_functions.js");
+require("../service_functions.js");
 let device = require("../device.js");
 
 module.exports = class devSwitch extends device {
 	constructor(plc, mqtt, config, mqtt_base) {
 		super(plc, mqtt, config, mqtt_base);
 
-		// add attributes spezific for a switch
+		// add attributes specific for a switch
 		// create attribute from config
 
 		// binary state

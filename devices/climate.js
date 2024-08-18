@@ -1,37 +1,36 @@
-let sf = require("../service_functions.js");
 let device = require("../device.js");
 
 module.exports = class devLight extends device {
 	constructor(plc, mqtt, config, mqtt_base) {
 		super(plc, mqtt, config, mqtt_base);
 
-		// add attributes spezific for a light
+		// add attributes specific for a light
 		// create attribute from config
 
-		// binary on/off state ->  power_command_topic
-		if (config.state) {
-			this.create_attribute(config.state, "X", "state");
+		// binary on/off state → power_command_topic
+		if (config["state"]) {
+			this.create_attribute(config["state"], "X", "state");
 		}
 
 		// current temperature
-		if (config.current_temperature) {
-			this.create_attribute(config.current_temperature, "REAL", "current_temperature");
+		if (config["current_temperature"]) {
+			this.create_attribute(config["current_temperature"], "REAL", "current_temperature");
 			this.attributes["current_temperature"].set_RW("r");
 
 			// if no update interval is defined, set it to 15 min
-			if (this.attributes["current_temperature"].update_interval == 0)
+			if (this.attributes["current_temperature"].update_interval === 0)
 				this.attributes["current_temperature"].update_interval = 900000; // 15 min
 		}
 
 		// target temperature
-		if (config.target_temperature) {
-			this.create_attribute(config.target_temperature, "REAL", "target_temperature");
+		if (config["target_temperature"]) {
+			this.create_attribute(config["target_temperature"], "REAL", "target_temperature");
 			this.attributes["target_temperature"].set_RW("w");
 		}
 
 		// Features for Future ...
 
-		// binary mode true = heating, false = cooling ->  mode_command_topic
+		// binary mode true = heating, false = cooling → mode_command_topic
 		// if (config.mode) {
 		// 	this.create_attribute(config.mode, "X", "mode");
 		// }
