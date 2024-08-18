@@ -19,9 +19,6 @@ module.exports = class attribute {
 		// and allowed to subscribe to the '/set' topic
 		this.write_to_s7 = true;
 
-		// only true if this attribute shouldnt be visible over mqtt
-		this.is_internal = false;
-
 		// plc type e.g. X, BYTE
 		this.type = type;
 
@@ -50,7 +47,7 @@ module.exports = class attribute {
 		this.subscribePlcUpdates();
 	}
 
-	// every attribute as to add it self to the plc_handler
+	// every attribute as to add itself to the plc_handler
 	// so that it can be updated from the plc
 	subscribePlcUpdates() {
 		if (this.plc_address) {
@@ -61,40 +58,36 @@ module.exports = class attribute {
 	set_RW(data) {
 		data = data.toLowerCase();
 
-		// data is always going to be read from the plc
-		// but with 'w' the state wont be sent over mqtt
-		// with 'r' enabled it isnt possible to write into the plc
+		// data is always going to be read from the plc,
+		// but with 'w' the state won't be sent over mqtt
+		// with 'r' enabled it isn't possible to write into the plc
 		switch (data) {
 			case "r":
 				this.write_to_s7 = false;
 				this.publish_to_mqtt = true;
-				this.is_internal = false;
 
 				// unsubscribe if already subscribed
-				sf.debug("-- Unubscribe from topic: '" + this.full_mqtt_topic + "/set'");
+				sf.debug("-- Unsubscribe from topic: '" + this.full_mqtt_topic + "/set'");
 				this.mqtt_handler.unsubscribe(this.full_mqtt_topic + "/set");
 				break;
 
 			case "w":
 				this.write_to_s7 = true;
 				this.publish_to_mqtt = false;
-				this.is_internal = false;
 				break;
 
 			case "i":
 				this.write_to_s7 = true;
 				this.publish_to_mqtt = false;
-				this.is_internal = true;
+				break;
 
-			case "rw":
-			case "wr":
+			case "wr" || "rw":
 				this.write_to_s7 = true;
 				this.publish_to_mqtt = true;
-				this.is_internal = false;
 				break;
 
 			default:
-				sf.debug("couldnt set rw-mode '" + data + "' on attribute '" + this.name + "'");
+				sf.debug("couldn't set rw-mode '" + data + "' on attribute '" + this.name + "'");
 				sf.debug("it can be either 'r', 'w' or 'rw'")
 		}
 	}
@@ -104,22 +97,22 @@ module.exports = class attribute {
 		if (this.publish_to_mqtt) {
 
 			// round all floating point values up to 3 decimal places
-			if (this.type == "REAL" && this.round_value) {
+			if (this.type === "REAL" && this.round_value) {
 				data = Math.round(data * 1000) / 1000;
 			}
 
-			if (this.type == "X" && this.boolean_inverted) {
+			if (this.type === "X" && this.boolean_inverted) {
 				data = !data;
 			}
 
 			const now = Date.now();
 
-			// if time has passed then updated if the update_interval is set
+			// if time has passed, then updated if the update_interval is set
 			let should_update = ((now - this.last_update) > this.update_interval) &&
-				this.update_interval != 0;
+				this.update_interval !== 0;
 
 			// last_value / last_update update
-			if (data != this.last_value && this.update_interval == 0) {
+			if (data !== this.last_value && this.update_interval === 0) {
 				should_update = true;
 			}
 
@@ -133,8 +126,8 @@ module.exports = class attribute {
 				});
 
 				if (this.write_back) {
-					if (data == this.last_set_data) {
-						// This change was triggered by ourself. Skipping and reseting.
+					if (data === this.last_set_data) {
+						// Ourselves triggered this change. Skipping and reset.
 						this.last_set_data = undefined;
 					} else {
 						// Writing back the change to the S7 input.
@@ -155,7 +148,7 @@ module.exports = class attribute {
 		let msg = this.formatMessage(data, this.type);
 
 		// no error in formatting
-		if (msg[0] == 0) {
+		if (msg[0] === 0) {
 			this.write_to_plc(msg[1], cb);
 		} else {
 			if (cb) cb("Incorrect formating");
@@ -163,7 +156,6 @@ module.exports = class attribute {
 	}
 
 	write_to_plc(data, cb) {
-		let that = this;
 		this.last_set_data = data;
 
 		// write to plc
@@ -180,18 +172,18 @@ module.exports = class attribute {
 	// format message
 	// according to type
 	//
-	// @param msg		string							mqtt message
-	// 				type 	String							PLC type (X/BYTE/REAL)
+	// @param msg String mqtt message
+	// 				type	String	PLC type (X/BYTE/REAL)
 	//
-	// @return 			Array[0]						Error code, 0="OK", -1="type not found", -2="cant format type"
-	//							Array[1]						formatted variable
+	// @return	Array[0]	Error code, 0="OK", -1="type not found", -2="cant format type"
+	//							Array[1]	formatted variable
 	//
 	formatMessage(msg, type, noDebugOut = false) {
 		let write;
 		switch (type) {
 			case "X":
-				if (msg == "true") write = true;
-				else if (msg == "false") write = false;
+				if (msg === "true") write = true;
+				else if (msg === "false") write = false;
 				else {
 					if (noDebugOut)
 						sf.debug("can´t format incoming message '" + msg + "' -> skipping it");
