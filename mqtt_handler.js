@@ -8,10 +8,10 @@ let isConnected = function () {
 let setup = function (config, onMessage, finished) {
 
 	// connect to mqtt
-	let client = mqtt.connect(config.host, {
-		username: config.user,
-		password: config.password,
-		rejectUnauthorized: config.rejectUnauthorized
+	let client = mqtt.connect(config["host"], {
+		username: config["user"],
+		password: config["password"],
+		rejectUnauthorized: config["rejectUnauthorized"]
 	});
 
 	// successful connected :)
