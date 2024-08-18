@@ -1,4 +1,3 @@
-let sf = require("../service_functions.js");
 let device = require("../device.js");
 
 module.exports = class devBinaryCover extends device {
@@ -9,13 +8,13 @@ module.exports = class devBinaryCover extends device {
 		this.type = "cover";
 
 		// targetPosition
-		if (config.targetPosition) {
-			this.create_attribute(config.targetPosition, "X", "targetPosition");
+		if (config["targetPosition"]) {
+			this.create_attribute(config["targetPosition"], "X", "targetPosition");
 		}
 
 		// currentPosition
-		if (config.currentPosition) {
-			this.create_attribute(config.currentPosition, "X", "currentPosition");
+		if (config["currentPosition"]) {
+			this.create_attribute(config["currentPosition"], "X", "currentPosition");
 			this.attributes["currentPosition"].set_RW("r"); // read from s7 and publish to mqtt
 		}
 	}
@@ -42,7 +41,7 @@ module.exports = class devBinaryCover extends device {
 	rec_mqtt_data(attr, data) {
 
 		// call parent class method
-		super.rec_mqtt_data(attr, data, (error) => {
+		super.rec_mqtt_data(attr, data, () => {
 			// callback function of attribute when write was finished
 
 		});
