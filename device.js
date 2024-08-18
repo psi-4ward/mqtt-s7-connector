@@ -6,16 +6,16 @@ module.exports = class device {
 		this.plc_handler = plc;
 		this.mqtt_handler = mqtt;
 
-		this.name = config.mqtt_base + "_" + config.name || config.mqtt_base + "_" + "unnamed device";
+		this.name = config["mqtt_base"] + "_" + config["name"] || config["mqtt_base"] + "_" + "unnamed device";
 		this.config = config;
 
 		this.discovery_topic = "homeassistant";
 		this.discovery_retain = false;
-		this.type = config.type.toLowerCase();
+		this.type = config["type"].toLowerCase();
 
 		// device topics
-		this.mqtt_name = config.mqtt;
-		this.full_mqtt_topic = config.mqtt_base + "/" + this.mqtt_name;
+		this.mqtt_name = config["mqtt"];
+		this.full_mqtt_topic = config["mqtt_base"] + "/" + this.mqtt_name;
 
 		// store all attribute objects in this array
 		this.attributes = {};
@@ -33,31 +33,31 @@ module.exports = class device {
 		// the config could be an object
 		// or simply a string
 		if (typeof config == "object") {
-			new_attribute.plc_address = config.plc;
+			new_attribute.plc_address = config["plc"];
 
 			// optional different set address
-			if (config.set_plc)
-				new_attribute.plc_set_address = config.set_plc;
+			if (config["set_plc"])
+				new_attribute.plc_set_address = config["set_plc"];
 
 			// optional Read/Write config
-			if (config.rw)
-				new_attribute.set_RW(config.rw);
+			if (config["rw"])
+				new_attribute.set_RW(config["rw"]);
 
 			// optional update_interval
-			if (config.update_interval)
-				new_attribute.update_interval = config.update_interval;
+			if (config["update_interval"])
+				new_attribute.update_interval = config["update_interval"];
 
 			// optionally inverted, works only with booleans
-			if (config.inverted)
-				new_attribute.boolean_inverted = config.inverted;
+			if (config["inverted"])
+				new_attribute.boolean_inverted = config["inverted"];
 
 			// optional unit_of_measurement only for homeassistant
-			if (config.unit_of_measurement)
-				new_attribute.unit_of_measurement = config.unit_of_measurement;
+			if (config["unit_of_measurement"])
+				new_attribute.unit_of_measurement = config["unit_of_measurement"];
 
 			// optional write back changes from plc to set_plc
-			if (config.write_back)
-				new_attribute.write_back = config.write_back;
+			if (config["write_back"])
+				new_attribute.write_back = config["write_back"];
 		} else {
 			new_attribute.plc_address = config;
 		}
@@ -71,7 +71,7 @@ module.exports = class device {
 		let type = params[0];
 
 		// check if the type is correct
-		// and if it isn't then print some infos
+		// and if it isn't, then print some infos
 		if (required_type !== "" && type !== required_type) {
 			sf.debug("Wrong datatype '" + type + "' at attribute '" + name + "'");
 
@@ -91,7 +91,7 @@ module.exports = class device {
 
 		sf.debug("- New attribute '" + new_attribute.full_mqtt_topic + "' was created");
 
-		// save attribute in array
+		// save attribute in an array
 		this.attributes[name] = new_attribute;
 	}
 
@@ -99,10 +99,21 @@ module.exports = class device {
 		// create a topic in which the discovery message can be sent
 		let topic = this.discovery_topic + "/" +
 			this.type + "/" +
-			this.config.mqtt_base + "/" +
+			this.config["mqtt_base"] + "/" +
 			this.mqtt_name + "/config";
 
-		info.unique_id = this.config.mqtt_base + "_" + this.mqtt_name;
+		info.unique_id = this.config["mqtt_base"] + "_" + this.mqtt_name;
+
+		info.origin = this.config["origin"];
+
+		if (this.config["device_name"] !== undefined) {
+			info.device = {
+				name: this.config["device_name"],
+				identifiers: [
+					this.config["device_identifier"]
+				]
+			};
+		}
 
 		this.mqtt_handler.publish(topic, JSON.stringify(info), {
 			retain: this.discovery_retain
@@ -110,7 +121,7 @@ module.exports = class device {
 	}
 
 	rec_s7_data(attr, data) {
-		// check if attribute with this name exists
+		// check if the attribute with this name exists
 		if (this.attributes[attr]) {
 
 			// forward all data to attribute
@@ -119,7 +130,7 @@ module.exports = class device {
 	}
 
 	rec_mqtt_data(attr, data, cb) {
-		// check if attribute with this name exists
+		// check if the attribute with this name exists
 		if (this.attributes[attr]) {
 
 			// forward all data to attribute
