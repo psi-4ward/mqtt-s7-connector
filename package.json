@@ -8,7 +8,7 @@
     "siemens",
     "s7",
     "plc",
-    "mqtt-bridge"addon-version
+    "mqtt-bridge"
   ],
   "main": "index.js",
   "bin": {
