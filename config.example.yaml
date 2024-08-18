@@ -30,6 +30,7 @@ devices:
   - name: Light
     type: light
     state: DB56,X150.0
+    device_name: Dimmer number 1
   - name: Climate
     type: climate
     state: DB56,X150.0
@@ -42,6 +43,7 @@ devices:
     currentTiltAngle: DB35,BYTE275
     tiltAngle: DB56,BYTE40
     trigger: DB56,X41.0
+    device_name: Window roof number 1
   - name: Binary Cover
     type: binarycover
     currentPosition: DB56,X0.3

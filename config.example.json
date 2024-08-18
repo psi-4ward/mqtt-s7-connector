@@ -108,7 +108,7 @@
     },
 
     {
-      "name": "Switch Writeonly",
+      "name": "Switch Write-only",
       "type": "switch",
 
       "state": {
@@ -118,7 +118,7 @@
     },
 
     {
-      "name": "Userdefined mqtt topic name",
+      "name": "User-defined mqtt topic name",
       "type": "sensor",
       "mqtt": "outside-sensor",
 
