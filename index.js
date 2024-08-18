@@ -20,7 +20,7 @@ function init() {
 
 		// set default config values if they arent set
 		config.update_time = config.update_time || 1000; // 1 second
-		config.temperature_interval = config.temperature_interval || 300000; // 300seconds or 5 minutes
+		config.temperature_interval = config.temperature_interval || 300000; // 300 seconds or 5 minutes
 
 		config.mqtt_base = config.mqtt_base || "s7";
 		config.mqtt_device_name = config.mqtt_device_name || "plc";
@@ -118,7 +118,7 @@ function plc_update_loop() {
 
 			// if device exists
 			if (devices[device]) {
-				// give all data to device
+				// give all data to a device
 				devices[device].rec_s7_data(attribute, readings[topic]);
 			}
 		}
