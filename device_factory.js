@@ -5,6 +5,7 @@ let dev_sensor = require('./devices/sensor.js');
 let dev_switch = require('./devices/switch.js');
 let dev_climate = require('./devices/climate.js');
 let dev_binCover = require('./devices/binaryCover.js');
+let dev_number = require('./devices/number.js');
 
 // noinspection JSValidateJSDoc
 /**
@@ -69,6 +70,9 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 
 		case "binarycover":
 			return new dev_binCover(plc, mqtt, config);
+
+		case "number":
+			return new dev_number(plc, mqtt, config);
 
 		default:
 			sf.debug("Unknown device type '" + type + "'");
