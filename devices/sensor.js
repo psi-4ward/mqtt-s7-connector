@@ -30,17 +30,25 @@ module.exports = class devSensor extends device {
 		if (this.attributes["state"]) {
 			info.state_topic = this.attributes["state"].full_mqtt_topic;
 
-			// optional unit_of_measurement
-			if(this.config.unit_of_measurement) {
-				info.unit_of_measurement = this.config.unit_of_measurement;
-			}
-
 			// if this sensor is binary
 			if (this.type === "binary_sensor") {
 				info.payload_on = "true";
 				info.payload_off = "false";
 			}
 		}
+
+		// Support more discover options from home-assistant
+		// https://www.home-assistant.io/integrations/mqtt/
+		[
+			'unit_of_measurement',
+			'device_class',
+			'value_template',
+			'name',
+		].forEach((key) => {
+			if (this.config[key]) {
+				info[key] = this.config[key];
+			}
+		});
 
 		super.send_discover_msg(info);
 	}
