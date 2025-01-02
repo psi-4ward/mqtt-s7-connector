@@ -31,8 +31,8 @@ module.exports = class devSensor extends device {
 			info.state_topic = this.attributes["state"].full_mqtt_topic;
 
 			// optional unit_of_measurement
-			if (this.attributes["state"].unit_of_measurement) {
-				info.unit_of_measurement = this.attributes["state"].unit_of_measurement;
+			if(this.config.unit_of_measurement) {
+				info.unit_of_measurement = this.config.unit_of_measurement;
 			}
 
 			// if this sensor is binary
