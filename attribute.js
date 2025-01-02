@@ -6,7 +6,7 @@ module.exports = class attribute {
 		this.mqtt_handler = mqtt;
 
 		this.last_update = 0;
-		this.last_value = 0;
+		this.last_value = null;
 		this.update_interval = 0;
 
 		this.plc_address = null;
