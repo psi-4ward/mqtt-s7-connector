@@ -28,7 +28,12 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 	if (config["mqtt"]) {
 		mqtt_name = config["mqtt"];
 	} else {
-		mqtt_name = name.toLowerCase().split(' ').join('_').split('/').join('_').split('-').join('_');
+		let rawMqttName = name;
+		if (config.device_name) {
+			// Support the composition of device_name and (entity) name
+			rawMqttName = config.device_name + " " + name;
+		}
+		mqtt_name = rawMqttName.toLowerCase().split(' ').join('_').split('/').join('_').split('-').join('_');
 	}
 	// check for double names if exists log a warning
 

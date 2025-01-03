@@ -113,6 +113,9 @@ module.exports = class device {
 					this.config["device_identifier"]
 				]
 			};
+			if(this.config["manufacturer"]) {
+				info.device.manufacturer = this.config["manufacturer"];
+			}
 		}
 
 		this.mqtt_handler.publish(topic, JSON.stringify(info), {
