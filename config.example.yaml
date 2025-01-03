@@ -1,3 +1,5 @@
+# $schema: ./config_schema.json
+
 ---
 update_time: 10000
 temperature_interval: 900000
@@ -93,3 +95,21 @@ devices:
     state: 
       plc: DB56,X150.0
       set_plc: DB56,X150.1
+
+  # Example of a device with two entities
+  - device_name: DevTest Sensor 1
+    name: Temperatur
+    manufacturer: Psi-Systems
+    type: sensor
+    state: DB4,INT48
+    unit_of_measurement: "°C"
+    value_template: "{{ (value | float / 10) | round(2) }}"
+    device_class: temperature
+
+  - device_name: DevTest Sensor 1
+    name: Humidity
+    type: sensor
+    state: DB4,INT50
+    unit_of_measurement: "%"
+    value_template: "{{ (value | float / 10) | round(2) }}"
+    device_class: humidity
