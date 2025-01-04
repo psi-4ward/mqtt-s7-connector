@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:22-slim
 
 # Create app directory
 WORKDIR /app
@@ -8,14 +8,12 @@ WORKDIR /app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install --only=production
+ENV NODE_ENV=production
+RUN npm ci
 
 # Bundle app source
-COPY . .
-
-# Add Config Volume File
-VOLUME ["/app/config.yaml"]
+COPY . ./
 
 # Start CMD
 USER node
-CMD [ "node", "index.js" ]
+ENTRYPOINT [ "/app/run.sh" ]
