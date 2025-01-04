@@ -72,6 +72,7 @@ properties:
           enum:
             - binarycover
             - climate
+            - heater
             - cover
             - light
             - number
@@ -279,7 +280,6 @@ properties:
               value_template: *value_template
               mqtt: *mqtt
               manufacturer: *manufacturer
-              state: *state
               current_temperature: *state
               current_temperature_template: *value_template
               target_temperature: *state
@@ -287,8 +287,40 @@ properties:
             required:
               - type
               - name
-              - state
               - current_temperature
+              - target_temperature
+        # Heater specific schema
+        - if:
+            properties:
+              type:
+                const: "heater"
+          then:
+            additionalProperties: false
+            properties:
+              type:
+                const: "heater"
+              name: *name
+              device_name: *device_name
+              device_class: *device_class
+              value_template: *value_template
+              mqtt: *mqtt
+              manufacturer: *manufacturer
+              current_temperature: *state
+              current_temperature_template: *value_template
+              target_temperature: *state
+              temperature_command_template: *command_template
+              heatMode_temperature_threshold:
+                description: "The temperature threshold on which the heater will be set in heat mode"
+                type: number
+              min_temp:
+                description: "The minimum value of the heater widget in Home Assistant"
+                type: number
+              max_temp:
+                description: "The maximum value of the heater widget in Home Assistant"
+                type: number
+            required:
+              - type
+              - name
               - target_temperature
 
 required:
