@@ -1,7 +1,7 @@
 FROM node:slim
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -14,7 +14,8 @@ RUN npm install --only=production
 COPY . .
 
 # Add Config Volume File
-VOLUME ["/usr/src/app/config.json"]
+VOLUME ["/app/config.yaml"]
 
 # Start CMD
-CMD [ "npm", "start" ]
+USER node
+CMD [ "node", "index.js" ]
