@@ -1,14 +1,14 @@
-let mqtt = require('mqtt');
+const mqtt = require('mqtt');
 
 let connected = false;
-let isConnected = function () {
+const isConnected = function () {
 	return connected;
 };
 
-let setup = function (config, onMessage, finished) {
+const setup = function (config, onMessage, initDevices) {
 
 	// connect to mqtt
-	let client = mqtt.connect(config["host"], {
+	const client = mqtt.connect(config["host"], {
 		username: config["user"],
 		password: config["password"],
 		rejectUnauthorized: config["rejectUnauthorized"]
@@ -18,7 +18,17 @@ let setup = function (config, onMessage, finished) {
 	client.on('connect', function () {
 		console.log('MQTT Connected');
 		connected = true;
-		finished();
+		initDevices();
+	});
+
+	client.on('disconnect', function () {
+		console.log('MQTT Disconnected');
+		connected = false;
+	});
+
+	client.on('close', function () {
+		console.log('MQTT Closed');
+		connected = false;
 	});
 
 	// handle incoming messages

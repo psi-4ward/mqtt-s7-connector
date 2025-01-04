@@ -2,23 +2,24 @@
 'use strict';
 
 // imports
-let mqtt_handler = require('./mqtt_handler');
-let plc_handler = require('./plc');
-let config_handler = require('./config_handler')
+const mqtt_handler = require('./mqtt_handler');
+const plc_handler = require('./plc');
+const config_handler = require('./config_handler')
 const validateConfig = require('./config_validator');
-let sf = require('./service_functions');
-let device_factory = require('./device_factory');
+const sf = require('./service_functions');
+const device_factory = require('./device_factory');
 
-let config = config_handler.config();
+const config = config_handler.config();
 validateConfig(config);
-let mqtt = mqtt_handler.setup(config.mqtt, mqttMsgParser, init);
-let plc = plc_handler.setup(config.plc, init);
+const mqtt = mqtt_handler.setup(config.mqtt, mqttMsgParser, initDevices);
+const plc = plc_handler.setup(config.plc, initDevices);
 
 let devices = [];
 
-function init() {
+function initDevices() {
 	if (mqtt_handler.isConnected() && plc_handler.isConnected()) {
 		sf.debug("Initialize application");
+		devices = [];
 
 		// set default config values if they arent set
 		config.update_time = config.update_time || 1000; // 1 second
@@ -33,7 +34,7 @@ function init() {
 
 		// namespace translation
 		plc.setTranslationCB((topic) => {
-			let topic_parts = topic.split('/');
+			const topic_parts = topic.split('/');
 
 			// call a correct device and ask for address from attribute
 			if (topic_parts[3] === "set") {
@@ -49,7 +50,7 @@ function init() {
 			// create for each config entry an object
 			// and save it to the array
 			config.devices.forEach((dev) => {
-				let new_device = device_factory(devices, plc, mqtt, dev, config.mqtt_base + "_" + config.mqtt_device_name);
+				const new_device = device_factory(devices, plc, mqtt, dev, config.mqtt_base + "_" + config.mqtt_device_name);
 
 				// perform a discovery message
 				new_device.discovery_topic = config.discovery_prefix;
@@ -73,7 +74,7 @@ function init() {
 
 		// discovery broadcast loop
 		setInterval(() => {
-			for (let dev in devices) {
+			for (const dev in devices) {
 				devices[dev].send_discover_msg();
 			}
 		}, 300000); // 5 min
@@ -88,12 +89,12 @@ function init() {
 }
 
 function mqttMsgParser(topic, msg) {
-	let topic_parts = topic.split('/');
+	const topic_parts = topic.split('/');
 
 	// check if the topic is in the mqtt_base
 	if (topic_parts[0] === config.mqtt_base + "_" + config.mqtt_device_name) {
-		let device = topic_parts[1];
-		let attribute = topic_parts[2];
+		const device = topic_parts[1];
+		const attribute = topic_parts[2];
 
 		// if device exists
 		if (devices[device]) {
@@ -113,10 +114,10 @@ function plc_update_loop() {
 		}
 
 		// publish all data
-		for (let topic in readings) {
-			let topic_parts = topic.split('/');
-			let device = topic_parts[1];
-			let attribute = topic_parts[2];
+		for (const topic in readings) {
+			const topic_parts = topic.split('/');
+			const device = topic_parts[1];
+			const attribute = topic_parts[2];
 
 			// if device exists
 			if (devices[device]) {
