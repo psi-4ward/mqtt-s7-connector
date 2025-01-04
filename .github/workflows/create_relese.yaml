@@ -35,6 +35,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get Repository URL
+        id: get_repo_url
+        run: echo "REPO_URL=https://github.com/${{ github.repository }}" >> $GITHUB_OUTPUT
+
       - name: 📋 Create Changelog
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v5
