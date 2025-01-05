@@ -280,7 +280,6 @@ properties:
               value_template: *value_template
               mqtt: *mqtt
               manufacturer: *manufacturer
-              state: *state
               current_temperature: *state
               current_temperature_template: *value_template
               target_temperature: *state
@@ -322,7 +321,6 @@ properties:
             required:
               - type
               - name
-              - target_temperature
               - state
               - current_temperature
               - target_temperature
