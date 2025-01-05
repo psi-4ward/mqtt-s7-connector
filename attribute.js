@@ -81,7 +81,8 @@ module.exports = class attribute {
 				this.publish_to_mqtt = false;
 				break;
 
-			case "wr" || "rw":
+			case "rw":
+			case "wr":
 				this.write_to_s7 = true;
 				this.publish_to_mqtt = true;
 				break;
