@@ -1,22 +1,20 @@
-let Nodes7;
-let fastq;
-Nodes7 = require('nodes7');
-fastq = require('fastq');
+const Nodes7 = require('nodes7');
+const fastq = require('fastq');
 
 let connected = false;
-let isConnected = function () {
+const isConnected = function () {
 	return connected;
 };
 
-let setup = function (config, callback) {
+const setup = function (config, initDevices) {
 	// create plc Object
-	let plc = new Nodes7({
+	const plc = new Nodes7({
 		silent: !config.debug
 	});
 
-	let writeQueue = fastq(plc, function (args, callback) {
-		let queueCallback = callback;
-		let appCallback = args[2];
+	const writeQueue = fastq(plc, function (args, callback) {
+		const queueCallback = callback;
+		const appCallback = args[2];
 
 		callback = function (error) {
 			queueCallback(error, null);
@@ -48,7 +46,7 @@ let setup = function (config, callback) {
 
 		writeQueue.resume();
 
-		callback();
+		initDevices();
 	});
 
 
