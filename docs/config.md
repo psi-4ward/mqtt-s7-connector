@@ -12,7 +12,7 @@ For a (probably incomplete) reference see [config.example.yaml](../config.exampl
 
 * `update_time`: Time for periodic updates in milliseconds (default 10s).
 * `temperature_interval`: Time for periodic updates in milliseconds (default 3min).
-* `mqtt_base`: The MQTT prefix for the base topic (default `s7`).
+* `mqtt_base`: The MQTT prefix for the base topic (default `s7`). ⚠️ **[For now](https://github.com/dixi83/mqtt-s7-connector/issues/19) you cannot use nested topics!**
 * `mqtt_device_name`: The MQTT suffix for the base topic (default `plc`). The default pattern for the root-topic is `${mqtt_base}_${mqtt_device_name}`.
 * `retain_messages`: Whether MQTT should [retain the messages](https://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages/).
 * `discovery_prefix`: The base topic where Home Assistant subscribes to for device-discovery messages. 
