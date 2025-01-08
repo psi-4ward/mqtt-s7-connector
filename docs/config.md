@@ -57,13 +57,20 @@ The config allows several properties to be configured as `PLCconf` such as `stat
 
 **Areas:**
 * `DB`: Data-Block
-* `M`: Memory (this Area is currently in development **not** supported yet, see [#14](https://github.com/dixi83/mqtt-s7-connector/issues/14))
+* `M`: Memory
 
-**Data types:**
+**Data-types:**
 * `X`: Access a single bit represented as Boolean
 * `BYTE`: Access a byte, represented as Number (unsigned int)
 * `INT`: Access 2 bytes, represented as Number (signed int)
 * `REAL`: Access 8 bytes, represented as Number (float)
+
+**Memory / Merker Data-type specification:**
+* `M0.1`: Access a single bit represented as Boolean
+* `MB2`: Access a 1-byte as Number (unsigned int) starting at offset 2
+* `MI3` / `MW3`: Access a 2-byte Number (signed int) starting at offset 3
+* `MD5`: Access a 4-byte Number (signed int) starting at offset 4
+* `MR10`: Access an 8-byte Numer (REAL) starting at offset 10
 
 **Byte offset:** The (zero-based) offset where the Read of the value should start. 
 You could also address a Bit in a Byte using the dot-notation like `X2.2`.
@@ -73,12 +80,14 @@ You could also address a Bit in a Byte using the dot-notation like `X2.2`.
 ```yaml
 # Simple PLCconf (string mode)
 devices:
-  - name: Lightswitch
-    state: DB4,X1.3 # Read the Bit 3 in Byte 1 on DB4
   - name: Temp-Sensor
     state: DB51,REAL216 # Read the REAL starting at Byte 216 on DB51
   - name: Humidity
     state: DB3,INT6 # Read the INT starting at Byte 6
+  - name: Lightswitch
+    state: DB4,X1.3 # Read/write the Bit 3 in Byte 1 on DB4
+  - name: Switch-1
+    state: M2.1 # Read/write the Bit 1 in Byte 2 on the Memory area
 ```
 
 #### Advanced PLC config

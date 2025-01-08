@@ -115,11 +115,13 @@ properties:
                 description: "PLC read/write configuration"
                 oneOf:
                   - type: string
+                    pattern: "^[M|DB][A-Z0-9,.]*$"
                   - type: object
                     additionalProperties: false
                     properties:
                       plc:
                         type: string
+                        pattern: "^[M|DB][A-Z0-9,.]*$"
                       rw:
                         type: string
                       update_interval:
