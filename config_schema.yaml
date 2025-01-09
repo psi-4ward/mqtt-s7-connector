@@ -11,15 +11,18 @@ properties:
   mqtt_base:
     type: string
     default: "s7"
+    "pattern": "^[a-zA-Z0-9_-]*$"
   mqtt_device_name:
     type: string
     default: "plc"
+    "pattern": "^[a-zA-Z0-9_-]*$"
   retain_messages:
     type: boolean
     default: false
   discovery_prefix:
     type: string
     default: "homeassistant"
+    "pattern": "^[a-zA-Z0-9_-]*$"
   discovery_retain:
     type: boolean
     default: false
@@ -112,11 +115,13 @@ properties:
                 description: "PLC read/write configuration"
                 oneOf:
                   - type: string
+                    pattern: "^[M|DB][A-Z0-9,.]*$"
                   - type: object
                     additionalProperties: false
                     properties:
                       plc:
                         type: string
+                        pattern: "^[M|DB][A-Z0-9,.]*$"
                       rw:
                         type: string
                       update_interval:
