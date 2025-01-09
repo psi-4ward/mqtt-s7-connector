@@ -12,6 +12,7 @@ module.exports = class device {
 		this.discovery_topic = "homeassistant";
 		this.discovery_retain = false;
 		this.type = config["type"].toLowerCase();
+		this.ha_component = this.type; // default is the type but can be overwritten
 
 		// device topics
 		this.mqtt_name = config["mqtt"];
@@ -98,7 +99,7 @@ module.exports = class device {
 	send_discover_msg(info) {
 		// create a topic in which the discovery message can be sent
 		let topic = this.discovery_topic + "/" +
-			this.type + "/" +
+			this.ha_component + "/" +
 			this.config["mqtt_base"] + "/" +
 			this.mqtt_name + "/config";
 
