@@ -5,7 +5,6 @@
 const mqtt_handler = require('./mqtt_handler');
 const plc_handler = require('./plc');
 const config_handler = require('./config_handler')
-const validateConfig = require('./config_validator');
 const sf = require('./service_functions');
 const device_factory = require('./device_factory');
 const validateConfig = require('./config_validator');
