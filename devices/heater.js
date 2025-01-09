@@ -110,6 +110,7 @@ module.exports = class devHeater extends device {
 			'name',
 			'min_temp',
 			'max_temp',
+			'temp_step'
 		].forEach((key) => {
 			if(this.config[key]) {
 				info[key] = this.config[key];
