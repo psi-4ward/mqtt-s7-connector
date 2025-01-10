@@ -63,6 +63,7 @@ The config allows several properties to be configured as `PLCconf` such as `stat
 * `X`: Access a single bit represented as Boolean
 * `BYTE`: Access a byte, represented as Number (unsigned int)
 * `INT`: Access 2 bytes, represented as Number (signed int)
+* `DINT`: Access 4 bytes, represented as Number (signed int)
 * `REAL`: Access 8 bytes, represented as Number (float)
 
 **Memory / Merker Data-type specification:**
