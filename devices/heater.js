@@ -72,6 +72,8 @@ module.exports = class devHeater extends device {
 			// Set to heat if target-temp is gt than heatMode_temperature_threshold config value
 			const threshold = this.config.heatMode_temperature_threshold || 4;
 			const newMode = targetTemperature > threshold ? 'heat' : 'off';
+			if (this.lastMode === newMode) return;
+			this.lastMode = newMode;
 			// if(newMode === this.lastMode) return;
 			sf.debug(`Setting mode to ${newMode} based on target temperature ${targetTemperature}, threshold ${threshold}`);
 			this.lastMode = newMode;
