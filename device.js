@@ -66,29 +66,62 @@ module.exports = class device {
 		// register the attribute to the plc library
 		new_attribute.subscribePlcUpdates();
 
-		// split the plc address to get the type
-		let offset = new_attribute.plc_address.split(',');
-		let params = offset[1].match(/(\d+|\D+)/g);
-		let type = params[0];
+		let type;
+		if(new_attribute.plc_address.startsWith('DB')) {
+			// split the plc address to get the type
+			let offset = new_attribute.plc_address.split(',');
+			let params = offset[1].match(/(\d+|\D+)/g);
+			type = params[0];
 
-		// check if the type is correct
-		// and if it isn't, then print some infos
-		if (required_type !== "" && type !== required_type) {
-			sf.debug("Wrong datatype '" + type + "' at attribute '" + name + "'");
+			// check if the type is correct
+			// and if it isn't, then print some infos
+			if(required_type !== "" && type !== required_type) {
+				sf.debug("Wrong datatype '" + type + "' at attribute '" + name + "'");
 
-			let numbers = "";
-			for (let i = 1; i < params.length; i++) {
-				numbers += params[i];
+				let numbers = "";
+				for(let i = 1; i < params.length; i++) {
+					numbers += params[i];
+				}
+
+				sf.debug("Did you mean " + offset[0] + "," +
+					required_type + numbers +
+					" instead of " + new_attribute.plc_address + " ?");
+
+				return;
 			}
-
-			sf.debug("Did you mean " + offset[0] + "," +
-				required_type + numbers +
-				" instead of " + new_attribute.plc_address + " ?");
-
-			return;
-		} else {
-			new_attribute.type = type;
+		} else if(new_attribute.plc_address.startsWith('M')) {
+			const parts = new_attribute.plc_address.match(/^(M[A-Z]?)(.*)/);
+			if(!parts) {
+				sf.debug("Invalid memory address '" + new_attribute.plc_address + "' at attribute '" + name + "'");
+				return;
+			}
+			const memoryType = parts[1];
+			// const memoryOffset = parts[2];
+			switch(memoryType) {
+				case 'MW': // 16-bit int
+				case 'MI': // 16-bit int
+				case 'MB': // 8-bit int
+				case 'MD': // 16-bit int
+					type = 'INT';
+					break;
+				case 'M': // 1-bit bool
+					type = 'X';
+					break;
+				case 'MR':
+					type = 'REAL';
+					break;
+				default:
+					sf.debug("Invalid memory type '" + memoryType + "' at attribute '" + name + "'");
+					return;
+			}
+			if(required_type !== "" && type !== required_type) {
+				sf.debug("Wrong datatype '" + type + "' at attribute '" + name + "', expected '" + required_type + "'");
+				return;
+			}
 		}
+
+		new_attribute.type = type;
+
 
 		sf.debug("- New attribute '" + new_attribute.full_mqtt_topic + "' was created");
 
