@@ -35,7 +35,7 @@ let config = function() {
 
         if (extension === "yaml" || extension === ".yml") {
             if (fs.existsSync(commander.opts().config)) {
-                return yaml.parse(fs.readFileSync(commander.opts().config, "utf8"));
+                return yaml.parse(fs.readFileSync(commander.opts().config, "utf8"), {merge: true});
             } else {
                 sf.error("Config file '" + commander.opts().config + "' not found")
             }
@@ -46,9 +46,9 @@ let config = function() {
         if (fs.existsSync('./config.json')) {
             return require('./config');
         } else if (fs.existsSync('./config.yaml')) {
-            return yaml.parse(fs.readFileSync('./config.yaml', "utf8"));
+            return yaml.parse(fs.readFileSync('./config.yaml', "utf8"), {merge: true});
         } else if (fs.existsSync('./config.yml')) {
-            return yaml.parse(fs.readFileSync('./config.yml', "utf8"));
+            return yaml.parse(fs.readFileSync('./config.yml', "utf8"), {merge: true});
         } else {
             sf.error("No config file found...")
         }
