@@ -5,6 +5,7 @@ let dev_sensor = require('./devices/sensor.js');
 let dev_switch = require('./devices/switch.js');
 let dev_climate = require('./devices/climate.js');
 let dev_heater = require('./devices/heater.js');
+let dev_button = require('./devices/button.js');
 let dev_binCover = require('./devices/binaryCover.js');
 let dev_number = require('./devices/number.js');
 
@@ -76,6 +77,9 @@ module.exports = function deviceFactory(devices, plc, mqtt, config, mqtt_base) {
 
 		case "heater":
 			return new dev_heater(plc, mqtt, config);
+
+		case "button":
+			return new dev_button(plc, mqtt, config);
 
 		case "binarycover":
 			return new dev_binCover(plc, mqtt, config);

@@ -81,6 +81,7 @@ properties:
             - number
             - sensor
             - switch
+            - button
       required:
         - type
       allOf:
@@ -329,6 +330,22 @@ properties:
               - state
               - current_temperature
               - target_temperature
+        # Button specific schema
+        - if:
+            properties:
+              type:
+                const: "button"
+          then:
+            additionalProperties: false
+            properties:
+              type:
+                const: "button"
+              name: *name
+              device_name: *device_name
+              state: *state
+              press_duration:
+                description: "The duration in milliseconds the state Bit gets set to 1"
+                type: integer
 
 required:
   - plc
