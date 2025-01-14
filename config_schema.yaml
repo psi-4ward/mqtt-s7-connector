@@ -327,7 +327,6 @@ properties:
             required:
               - type
               - name
-              - state
               - current_temperature
               - target_temperature
         # Button specific schema

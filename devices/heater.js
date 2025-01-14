@@ -12,6 +12,9 @@ module.exports = class devHeater extends device {
 	constructor(plc, mqtt, config, mqtt_base) {
 		super(plc, mqtt, config, mqtt_base);
 
+		// Overwrite the type of the home assistant component because it does not match the device type
+		this.ha_component = 'climate';
+
 		// current temperature
 		if (config["current_temperature"]) {
 			this.create_attribute(config["current_temperature"], this.getDatatype(config['current_temperature']), "current_temperature");
