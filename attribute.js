@@ -210,6 +210,7 @@ module.exports = class attribute {
 				}
 				break;
 
+			case "DINT":
 			case "INT":
 				write = parseInt(msg, 10);
 				if (isNaN(write)) {
