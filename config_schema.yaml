@@ -324,6 +324,9 @@ properties:
               max_temp:
                 description: "The maximum value of the heater widget in Home Assistant"
                 type: number
+              temp_step:
+                type: number
+                description: "Step size for temperature set point."
             required:
               - type
               - name
