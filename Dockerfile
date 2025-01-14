@@ -1,20 +1,19 @@
-FROM node:slim
+FROM node:22-slim
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install --only=production
+ENV NODE_ENV=production
+RUN npm ci
 
 # Bundle app source
-COPY . .
-
-# Add Config Volume File
-VOLUME ["/usr/src/app/config.json"]
+COPY . ./
 
 # Start CMD
-CMD [ "npm", "start" ]
+USER node
+ENTRYPOINT [ "/app/run.sh" ]

@@ -1,0 +1,15 @@
+config.yaml
+mock-server
+.github
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+.vscode
+Makefile
+helm-charts
+.env
+.editorconfig
+.idea
+coverage*

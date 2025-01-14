@@ -2,3 +2,4 @@ config.json
 config.yaml
 node_modules/
 .idea/
+mock-server
